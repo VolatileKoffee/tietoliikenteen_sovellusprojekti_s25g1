@@ -1,0 +1,24 @@
+# nRF5340DK builds
+build*/
+
+# temporary zephyr files
+.zephyr/
+
+# compiled binaries and object files
+*.o
+*.a
+*.exe
+*.bin
+*.hex
+*.elf
+*.map
+*.img
+*.bak
+
+# environment variable(s)
+.env
+*.env
+
+# local VSCode settings
+.vscode/
+.history/
