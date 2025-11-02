@@ -1,6 +1,9 @@
 # tietoliikenteen_sovellusprojekti_s25g1
-This is repository for "Tietoliikenteen sovellusprojekti" -project in fall 2025.
+Kurssin "Tietoliikenteen sovellusprojekti" projektirepositori syksyllä 2025.
 
-Authors:  
+Projektin arkkitehtuurikaavio:  
+![Arkkitehtuurikaavio](docs/projektin_arkkitehtuuri_ver1.png)
+
+Projektin tekijät:  
 Veikka Kemppainen - [VolatileKoffee](https://github.com/VolatileKoffee)  
 Taavetti Konttila - [Tappi868](https://github.com/Tappi868)  
