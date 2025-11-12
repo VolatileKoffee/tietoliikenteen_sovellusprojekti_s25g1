@@ -7,7 +7,23 @@ import logging                  # https://docs.python.org/3/library/logging.html
 logger = logging.getLogger(__name__)
 from bleak import BleakScanner  # https://github.com/hbldh/bleak
 from bleak import BleakClient
+import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+
+
 # testing mysql-connection with mysql.connector.connect
+
+
+localhost = os.getenv("LOCALHOST")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("PASSWORD")
+db_name = os.getenv("DATABASE")
+
 
 
 MODEL_NBR_UUID = "2A00"
@@ -107,12 +123,66 @@ def connected(): # func if connection is established
 
 def notify_handler(sender,data): # func to receive data
     int_result = int.from_bytes(data,"little") # data is bytearray, little for 'Little Endian'
-    print(f"Received from {sender}: bytearray {data}: int {int_result}") 
-    SENSOR_DATA.append(data)
+    print(f"Received from {sender}: bytearray {data}: int {int_result}")
+       
+    SENSOR_DATA.append(int_result)
 
 def export_to_db(data):
 
-    pass
+
+    mydb = mysql.connector.connect(
+    host=localhost,
+    user= db_user,
+    password= db_password,
+    database=db_name
+    )
+    mycursor = mydb.cursor()
+    sensor_data_dict = {"x": [],"y":[],"z":[],"orientation":[]}
+
+    integer = 0
+
+    for x in data:
+
+        match integer:
+            case 0:
+                sensor_data_dict["x"].append(x)
+
+            case 1:
+                sensor_data_dict["y"].append(x)
+            case 2:
+                sensor_data_dict["z"].append(x)
+            case 3:
+                sensor_data_dict["orientation"].append(x)
+    
+
+        
+
+        integer+=1        
+        if integer == 4:
+            integer = 0
+        
+    print(sensor_data_dict)
+    print(sensor_data_dict["x"])
+
+    
+    data_tuples = list(zip(
+        sensor_data_dict["x"],
+        sensor_data_dict["y"],
+        sensor_data_dict["z"],
+        sensor_data_dict["orientation"]
+    ))
+    query = "INSERT INTO table rawdata(sensorvalue_x,sensorvalue_y,sensorvalue_z,sensor_orientation) VALUES(%s,%s,%s,%s)"
+
+    mycursor.executemany(query, data_tuples)
+    mycursor.close()
+
+
+
+
+
+
+
+
 
 
     
@@ -150,8 +220,8 @@ async def main():
     # await client.start_notify("00001526-1212-efde-1523-785feabcd123",notify_handler)
     await asyncio.sleep(30)   # keep receiving for 30s
     await client.stop_notify(CHAR_UUID)
-    print(SENSOR_DATA)
     client.disconnect() # frequent error: "RuntimeWarning: coroutine 'BleakClient.disconnect' was never awaited" 
+    export_to_db(SENSOR_DATA)
 
     return 1
 
