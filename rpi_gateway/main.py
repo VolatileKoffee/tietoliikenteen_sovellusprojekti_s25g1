@@ -89,10 +89,6 @@ class BLEGateway:                                           # class for modular 
         mydb.commit() # added row. For error checking add "mydb.rollback()"?
         mycursor.close()
 
-### END OF CLASS ###
-
-
-### NEW NOTIFY_HANDLER ###
 
 def notify_handler(sender,data): # func to receive data
     int_result = int.from_bytes(data,"little") # data is bytearray, little for 'Little Endian'
@@ -105,8 +101,6 @@ def notify_handler(sender,data): # func to receive data
         TEMP_DATA.clear()
     
     
-# ### NEW MAIN ###
-
 async def main():
     logging.basicConfig(level=logging.INFO) # Learning logging-library. No separate log file!
     ble = BLEGateway()
@@ -129,134 +123,6 @@ async def main():
         ble.stop_notifications(CHAR_UUID)
         await ble.disconnect()
         ble.export_to_db(SENSOR_DATA)
-
-# ### END OF CHANGES ###
-
-
-# async def scanner():
-#     # logger.debug("scanner test")
-#     print(f"Scanning devices..")
-#     devices = await BleakScanner.discover(timeout=5.0)
-#     return devices
-
-# def connected(): # func if connection is established
-#     pass
-
-
-# def notify_handler(sender, data): # func to receive data
-#     int_result = int.from_bytes(data,"little") # data is bytearray, little for 'Little Endian'
-#     print(f"Received from {sender}: bytearray {data}: int {int_result}")
-
-#     TEMP_DATA.append(int_result)
-
-#     if len(TEMP_DATA) == 4:
-#         SENSOR_DATA.append(tuple(TEMP_DATA)) # list -> tuple  +  appending tuple to a list
-#         print(f"DEBUG {SENSOR_DATA}")
-#         TEMP_DATA.clear()
-
-
-# def export_to_db(data):
-
-#     mydb = mysql.connector.connect(
-#     host=localhost,
-#     user= db_user,
-#     password= db_password,
-#     database=db_name
-#     )
-
-#     print(f"DEBUG data: {data}")
-
-#     mycursor = mydb.cursor()
-    
-#     """
-#     sensor_data_dict = {"x": [],"y":[],"z":[],"orientation":[]}
-
-#     integer = 0
-
-#     for x in data:
-#         match integer:
-#             case 0:
-#                 sensor_data_dict["x"].append(x)
-#             case 1:
-#                 sensor_data_dict["y"].append(x)
-#             case 2:
-#                 sensor_data_dict["z"].append(x)
-#             case 3:
-#                 sensor_data_dict["orientation"].append(x)
-    
-#         integer+=1        
-#         if integer == 4:
-#             integer = 0
-        
-#     print(sensor_data_dict)
-#     print(sensor_data_dict["x"])
-
-    
-#     data_tuples = list(zip(
-#         sensor_data_dict["x"],
-#         sensor_data_dict["y"],
-#         sensor_data_dict["z"],
-#         sensor_data_dict["orientation"]
-#     ))
-#     """
-#     # values_to_send = 
-#     query = "INSERT INTO rawdata (sensorvalue_x, sensorvalue_y, sensorvalue_z, sensor_orientation) VALUES (%s,%s,%s,%s);" # removed "table" and added ";"
-#     # query = "INSERT INTO table rawdata(sensorvalue_x,sensorvalue_y,sensorvalue_z,sensor_orientation) VALUES(%s,%s,%s,%s)"
-
-#     mycursor.executemany(query, data)
-#     mydb.commit() # added row. for error checking a "mydb.rollback()"?
-#     mycursor.close()
-
-
-
-# async def main():
-#     # logging.basicConfig(level=logging.DEBUG)
-#     print(f"main starting")  
-
-#     found_devices = await scanner()
-#     device_address = None
-
-#     for dev in found_devices:
-#         print(f"address: {dev.address},  name: {dev.name}")
-#         if dev.name == TARGET_DEVICE_NAME:
-#             device_address = dev.address
-#             print("Success: Device found")
-#             exit  # exit or exit() ?
-    
-#     if device_address == None:
-#         print("Device not found.")
-#         exit  # exit or exit() ?
-
-#     client = BleakClient(device_address)
-
-
-#     (await client.connect())
-#     model_number = await client.read_gatt_char(MODEL_NBR_UUID)
-#     print("Model Number: {0}".format("".join(map(chr, model_number))))
-
-#     if BleakClient.is_connected == 0:
-#         print("Client connected")
-#     print(model_number)
-
-#     await client.start_notify(CHAR_UUID,notify_handler)
-#     # await client.start_notify("00001526-1212-efde-1523-785feabcd123",notify_handler)
-#     await asyncio.sleep(30)   # keep receiving for 30s
-#     await client.stop_notify(CHAR_UUID)
-#     client.disconnect() # frequent error: "RuntimeWarning: coroutine 'BleakClient.disconnect' was never awaited" 
-#     export_to_db(SENSOR_DATA)
-
-#     return 1
-
-
-# if __name__ == "__main__":
-#     try:
-#         if 1 == asyncio.run(main()):
-#             print("Working")
-#         else:
-#             print("Not working")
-#     except KeyboardInterrupt:
-#         print("Stopped.")
-
 
 if __name__ == "__main__":
     asyncio.run(main())
