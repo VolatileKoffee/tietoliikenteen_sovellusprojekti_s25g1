@@ -119,6 +119,7 @@ async def main():
         #     sleep(60) ? ja loop alusta...
     except Exception as e: # from Raise Exception doc
         pass # logging error
+    
     finally:
         ble.stop_notifications(CHAR_UUID)
         await ble.disconnect()

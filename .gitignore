@@ -15,6 +15,9 @@ build*/
 *.img
 *.bak
 
+# generated data file(s)
+*.csv
+
 # environment variable(s)
 .env
 *.env
