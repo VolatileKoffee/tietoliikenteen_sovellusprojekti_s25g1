@@ -18,6 +18,9 @@ build*/
 # generated data file(s)
 *.csv
 
+# e.g. Kmeans model (pickle)
+.pkl
+
 # environment variable(s)
 .env
 *.env
