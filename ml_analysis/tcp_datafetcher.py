@@ -67,7 +67,7 @@ class Dataclient:
     def csv_conversion(self, dataframe_in):
         outputfile='./ml_analysis/data/measurementdata.csv'
         dataframe_in.to_csv(outputfile,index=False) #if index isn't necessary, use index=False or data.drop("Unnamed: 0",etc)
-
+        # saved successfully log etc..
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
