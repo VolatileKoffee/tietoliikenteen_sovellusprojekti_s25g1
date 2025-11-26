@@ -66,8 +66,14 @@ class Dataclient:
 
     def csv_conversion(self, dataframe_in):
         outputfile='./ml_analysis/data/measurementdata.csv'
-        dataframe_in.to_csv(outputfile,index=False) #if index isn't necessary, use index=False or data.drop("Unnamed: 0",etc)
-        # saved successfully log etc..
+        try:
+            dataframe_in.to_csv(outputfile,index=False) #if index isn't necessary, use index=False or data.drop("Unnamed: 0",etc)
+            logger.info(f"File saved succesfully.")
+        except IOError as e1:
+            logger.info(f"Error: Could not save file. Message: {e1}")
+        except Exception as e2:
+            logger.info(f"Unexpected error. Message: {e2}")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

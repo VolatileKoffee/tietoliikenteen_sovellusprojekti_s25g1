@@ -109,7 +109,7 @@ async def main():
         await ble.connection(address)
         await ble.device_model_number()
         await ble.start_notifications(CHAR_UUID,notify_handler)
-        await asyncio.sleep(30)   # keep receiving for 30s
+        await asyncio.sleep(30)   # keep receiving for 10s # changed for raspberry pi too
         # Tällä hetkellä datan keruu aloitetaan, odotetaan 30s ja lopetetaan. Millä tavalla jatkuu? Painike, komentorivin komento.. tms.
         # While True:
         #     await ble.start_notifications(CHAR_UUID,notify_handler)
@@ -118,11 +118,16 @@ async def main():
         #     lähetys tietokantaan
         #     sleep(60) ? ja loop alusta...
     except Exception as e: # from Raise Exception doc
-        pass # logging error
+        logger.info(f"Encountered an error {e}")
     
     finally:
-        ble.stop_notifications(CHAR_UUID)
-        await ble.disconnect()
+        logger.info(f"Stopping notifications...")
+        await ble.stop_notifications(CHAR_UUID)
+        try:
+            await ble.disconnect()
+        except Exception as e:
+            logger.info(f"Encountered an error {e}")
+
         ble.export_to_db(SENSOR_DATA)
 
 if __name__ == "__main__":
