@@ -8,16 +8,20 @@ measurementData.drop(['time' , 'sensor_orientation'],axis= 1 , inplace=True)
 
 
 # Creating initial random spots 
-k = 6   # <-- just change this
+k = 6
 clusters = {}
 np.random.seed(23)
 data = measurementData[['sensor_x','sensor_y', 'sensor_z']].values
-print(data.shape)
-print(data.min())
-print(data.max())
+print(f"{data.shape}")
+print(f"Min: {data.min()}")
+print(f"Max: {data.max()}")
 
-def distance(p1,p2):
-    return np.sqrt(np.sum((p1-p2)**2))
+# Finding the distance between datapoints
+def distance(p1, p2):
+    result = np.sqrt(np.sum((p1-p2)**2))
+    print(f"result is {result}")
+    return result
+
 
 def assign_clusters(X, clusters):
     for idx in range(X.shape[0]):
@@ -32,6 +36,7 @@ def assign_clusters(X, clusters):
         clusters[curr_cluster]['points'].append(curr_x)
     return clusters
 
+
 def update_clusters(X, clusters):
     for i in range(k):
         points = np.array(clusters[i]['points'])
@@ -41,6 +46,7 @@ def update_clusters(X, clusters):
             
             clusters[i]['points'] = []
     return clusters
+
 
 def pred_cluster(X, clusters):
     pred = []
@@ -63,9 +69,9 @@ for idx in range(k):
     }
     clusters[idx] = cluster
 
-clusters = assign_clusters(data,clusters)
-clusters = update_clusters(data,clusters)
-pred = pred_cluster(data,clusters)
+clusters = assign_clusters(data, clusters)
+clusters = update_clusters(data, clusters)
+pred = pred_cluster(data, clusters)
 
 
 
@@ -80,11 +86,12 @@ ax = fig.add_subplot(111, projection='3d')
 """for i in clusters:
     center = clusters[i]['center']
     ax.scatter(center[0], center[1], center[2],
-               marker='*', c='red', s=200)"""
+               marker='*', c='red', s=200)
+"""
 ax.scatter(data[:,0],data[:,1], data[:, 2],c = pred)
 for i in clusters:
     center = clusters[i]['center']
-    ax.scatter(center[0],center[1], center[3],marker = '^',c = 'red')
+    ax.scatter(center[0],center[1], center[2],marker = '^',c = 'red')
 
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
