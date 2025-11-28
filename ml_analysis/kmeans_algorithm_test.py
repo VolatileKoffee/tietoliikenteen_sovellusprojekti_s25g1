@@ -92,10 +92,13 @@ if __name__=="__main__":
         print(f"Win counts: {cumCentWinCounterList}")
 
     logger.info(f"Final centroids:\n{centroids}")
+    logger.info(f"centroids tupe {centroids.dtype}")
 
     # calculating total_error ?
     
-        
+
+    # perfect final centroid data to .h file??
+
 
 # Plotting blops and centroids to 3D space
 fig = plt.figure()
