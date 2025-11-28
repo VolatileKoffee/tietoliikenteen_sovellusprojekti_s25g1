@@ -31,8 +31,61 @@ def assign_centroids(k, data):
 def datapoint_distances(p1,p2):
     return np.linalg.norm(p1 - p2)
     
-# def euclidean_distance(p1, p2):
-#     return np.sqrt(np.sum((p1-p2)**2))
+
+# Sorts XYZ-values, formats values to C style and build the header file
+def header_maker(final_centroids):
+    logger.info(f"START: final_centroids:\n{final_centroids}\nfinal_centroids shape:{final_centroids.shape}")
+
+    new_selection_order = [
+    np.argmax(final_centroids[:,0]), # high x
+    np.argmin(final_centroids[:,0]), # low x
+    np.argmax(final_centroids[:,1]), # high y 
+    np.argmin(final_centroids[:,1]), # low y
+    np.argmax(final_centroids[:,2]), # high z
+    np.argmin(final_centroids[:,2])  # low z
+    ]
+    
+    sorted_centroids = final_centroids[new_selection_order] # applying the sort
+
+    raw_c_rows = [f"{{{row[0]}, {row[1]}, {row[2]}}}" for row in sorted_centroids] # formats array to c style
+    joined_c_rows = ",\n".join(raw_c_rows) # joins raw rows together
+
+    logger.info(f"Centroids are sorted and joined:\n{joined_c_rows}")
+
+    c_content = f"""#ifndef CENTROID_DATA_H
+#define CENTROID_DATA_H
+
+static const int centroid_coords[6][3] = {{
+{joined_c_rows}
+}};
+
+#endif // CENTROID_DATA_H
+"""
+    
+    filename="./ml_analysis/centroid_data.h"
+    try:
+        with open(filename, "w") as f:
+            f.write(c_content)
+            logger.info(f"Write to {filename} was succesful.")
+    except IOError as e:
+        logger.info(f"Couldn't write to a file {filename}: {e}")
+
+
+def plotting_results(data, centroids):
+    # Plotting blops and centroids to 3D space
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    ax.scatter(data[:,0], data[:,1], data[:,2], c = 'red', alpha=0.1)
+
+    ax.scatter(centroids[:,0], centroids[:,1], centroids[:,2], c = 'blue', marker='*', alpha=1, s=1000)
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    plt.grid(True)
+    plt.show()
+
 
 if __name__=="__main__":
     logging.basicConfig(level=logging.INFO)
@@ -64,9 +117,9 @@ if __name__=="__main__":
             cumCentWinCounterList[closestcentroid] += 1   
                     
 
-        print(f"Cumulative list: {cumList}")
-        print(f"Centroid win counts: {cumCentWinCounterList}")
-        print(f"New coords for centroid: {cumList[0] / cumCentWinCounterList[0]}")
+        # logger.info(f"Cumulative list: {cumList}")
+        # logger.info(f"Centroid win counts: {cumCentWinCounterList}")
+        # logger.info(f"New coords for centroid: {cumList[0] / cumCentWinCounterList[0]}")
 
         oldcentroids = centroids.copy() # copy prevents "linking" from happening
         
@@ -88,28 +141,14 @@ if __name__=="__main__":
 
         # iteration check? iteration += 1 if iteration > 100: running=False
 
-        print(f"Updated centroids:\n{centroids}")
-        print(f"Win counts: {cumCentWinCounterList}")
+        logger.info(f"Updated centroids:\n{centroids}")
+        logger.info(f"Win counts:{cumCentWinCounterList}")
 
     logger.info(f"Final centroids:\n{centroids}")
-    logger.info(f"centroids tupe {centroids.dtype}")
+    # logger.info(f"Centroids type:{centroids.dtype}")
 
-    # calculating total_error ?
-    
+    # do we want to calculate total_error ?
 
-    # perfect final centroid data to .h file??
-
-
-# Plotting blops and centroids to 3D space
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-ax.scatter(data[:,0], data[:,1], data[:,2], c = 'red', alpha=0.1)
-
-ax.scatter(centroids[:,0], centroids[:,1], centroids[:,2], c = 'blue', marker='*', alpha=1, s=1000)
-
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-plt.grid(True)
-plt.show()
+    # Forming header file from latest centroids
+    header_maker(centroids)
+    plotting_results(data, centroids)
