@@ -55,7 +55,7 @@ def header_maker(final_centroids):
     c_content = f"""#ifndef CENTROID_DATA_H
 #define CENTROID_DATA_H
 
-static const int centroid_coords[6][3] = {{
+const int centroid_coords[6][3] = {{
 {joined_c_rows}
 }};
 
