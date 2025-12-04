@@ -20,7 +20,8 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 ### Projektin arkkitehtuurikaavio:
 
-![Arkkitehtuurikaavio](docs/projektin_arkkitehtuuri_ver1.png)
+<!-- ![Arkkitehtuurikaavio](docs/projektin_arkkitehtuuri_ver1.png) -->
+<img src="https://github.com/VolatileKoffee/tietoliikenteen_sovellusprojekti_s25g1/blob/READMEupdate/docs/projektin_arkkitehtuuri_ver1.png" alt="Projektin arkkitehtuurikaavio" style="width:auto; height:auto;">
 
 ### Käytetyt teknologiat
 
@@ -51,6 +52,12 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
   - Bluetooth LE
   - HTTP
   - TCP
+
+| Protokollat  | Kuvaus                                          |
+| ------------ | ----------------------------------------------- |
+| Bluetooth LE | Käytetään nRF5340DK:n ja Raspberry Pi:n välillä |
+| HTTP         | desc                                            |
+| TCP          | desc                                            |
 
 ## Komponentit
 
@@ -102,6 +109,9 @@ KUVA: GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat s
 - confusion_matrix -ohjelma
 
   - Ohjelma käyttää kmeans_algorithm -ohjelman tuottamaa centroid_data.h-tiedostoa ja nRF5340DK-kehitysalustalla mitattuja XYZ-arvoja. Tuloksena syntyy 6x6 kokoinen "confusion matriisi", jonka avulla kmeans_algorithm -ohjelman luokittelukykyä voidaan arvioida.
+
+<!-- ![measurement](docs/confusion_matrix_program_output.png) -->
+<img src="https://github.com/VolatileKoffee/tietoliikenteen_sovellusprojekti_s25g1/blob/READMEupdate/docs/confusion_matrix_program_output.png" alt="Confusion Matrix ohjelman tulostus" style="width:50%; height:auto;">
 
 ## Projektin tekijät
 
