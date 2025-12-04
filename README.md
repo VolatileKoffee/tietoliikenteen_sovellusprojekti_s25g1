@@ -66,7 +66,10 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
   - GAP-yhteysrooli on Peripheral.
 
 ![nRF5340DK ja GY-61-kiihtyvyysanturi](docs/nrf5340dk_and_sensor.jpg)
+<img src="image-url" alt="Alt Text" style="width:50%; height:auto;">
+
 ![GY-61-kiihtyvyysanturi ja XYZ-akselit](docs/3axis_with_orientations_ver1.png)
+<img src="https://github.com/VolatileKoffee/tietoliikenteen_sovellusprojekti_s25g1/blob/READMEupdate/docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturi ja XYZ-akselit" style="width:50%; height:auto;">
 
 ### Raspberry Pi 3 Model B
 
@@ -92,7 +95,7 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
   - Lukee measurementdata.csv tiedoston ja piirtää XYZ-datapisteet 3D-taulukkoon. Tämän jälkeen ohjelma asettaa keskipisteille (centroids) omat datajoukot (clusters) ja laskee jokaiselle keskipisteelle etäisyyden datajoukon pisteisiin. Keskipiste "voittaa" lyhyimmällä etäisyydellä olevan datapisteen itselleen. Etäisyyslaskun ja "voitettujen" datapisteiden perusteella keskipiste saa omat XYZ-koordinaatit.
   - Kuuden keskipisteen XYZ-koordinaatit tallennetaan centroid_coords -taulukkoon centroid_data.h-tiedoston sisälle.
 
-- kmeans_confusion_matrix -ohjelma
+- confusion_matrix -ohjelma
 
   - Ohjelma käyttää kmeans_algorithm -ohjelman tuottamaa centroid_data.h-tiedostoa ja nRF5340DK-kehitysalustalla mitattuja XYZ-arvoja. Tuloksena syntyy 6x6 kokoinen "confusion matriisi", jonka avulla kmeans_algorithm -ohjelman luokittelukykyä voidaan arvioida.
 
