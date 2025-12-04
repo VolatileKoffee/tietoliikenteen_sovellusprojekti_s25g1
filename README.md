@@ -65,11 +65,15 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
   - Ohjelman tarkoitus on yhdistää Raspberry Pi -alustaan, mainostaa olemassaoloaan (advertising) ja yhteyden muodostaessaan lähettää mitattua anturidataa ilmoituksien (notifications) kautta.
   - GAP-yhteysrooli on Peripheral.
 
-![nRF5340DK ja GY-61-kiihtyvyysanturi](docs/nrf5340dk_and_sensor.jpg)
-<img src="image-url" alt="Alt Text" style="width:50%; height:auto;">
+KUVA: nRF5340DK ja GY-61-kiihtyvyysanturi. Kuvassa alusta ja sensori ovat valmiita mittaukseen:
 
-![GY-61-kiihtyvyysanturi ja XYZ-akselit](docs/3axis_with_orientations_ver1.png)
-<img src="https://github.com/VolatileKoffee/tietoliikenteen_sovellusprojekti_s25g1/blob/READMEupdate/docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturi ja XYZ-akselit" style="width:50%; height:auto;">
+<!-- ![nRF5340DK ja GY-61-kiihtyvyysanturi](docs/nrf5340dk_and_sensor.jpg) -->
+<img src="https://github.com/VolatileKoffee/tietoliikenteen_sovellusprojekti_s25g1/blob/READMEupdate/docs/nrf5340dk_and_sensor.jpg" alt="nRF5340DK ja GY-61-kiihtyvyysanturi" style="width:75%; height:auto;">
+
+KUVA: GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat sensorisuuntia:
+
+<!-- ![GY-61-kiihtyvyysanturi ja XYZ-akselit](docs/3axis_with_orientations_ver1.png) -->
+<img src="https://github.com/VolatileKoffee/tietoliikenteen_sovellusprojekti_s25g1/blob/READMEupdate/docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturi ja XYZ-akselit" style="width:75%; height:auto;">
 
 ### Raspberry Pi 3 Model B
 
