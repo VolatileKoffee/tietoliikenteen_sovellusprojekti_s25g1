@@ -25,39 +25,33 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 ### Käytetyt teknologiat
 
-- Alustat
+| Alustat                | Kuvaus                                                                |
+| ---------------------- | --------------------------------------------------------------------- |
+| Raspberry Pi 3 Model B | Minitietokone, joka käyttää Raspberry Pi OS -käyttöjärjestelmää       |
+| Nordic nRF5340DK       | Nordic Semiconductors:in kehitysalusta                                |
+| Ubuntu Server          | Virtuaaliserveri, joka käyttää Ubuntu 24.04.3 LTS -käyttöjärjestelmää |
+| MySQL                  | Tietokanta-alusta virtuaaliserverillä                                 |
 
-  - Raspberry Pi 3 Model B
-  - Nordic nRF5340DK
-  - Ubuntu server
-  - MySQL
+| Kehitysalustat    | Kuvaus                                                   |
+| ----------------- | -------------------------------------------------------- |
+| Visual Studo Code | Ohjelmointiympäristö                                     |
+| nRF Connect       | nRF-laitteiden kehitystä tukeva työkalukehys (framework) |
+| GitHub            | Verkkosivu, joka tarjoaa Git-versionhallinnan            |
 
-- Kehitysalustat
+| Ohjelmointikielet | Kuvaus                                        |
+| ----------------- | --------------------------------------------- |
+| Python            |                                               |
+| C                 |                                               |
+| PHP               |                                               |
+| Bash              |                                               |
+| SQL               |                                               |
+| Git               | Komentoriviohjelma, käytetään GitHubin kanssa |
 
-  - Visual Studio Code
-  - nRF Connect
-  - GitHub
-
-- Ohjelmointikielet
-
-  - Python
-  - C
-  - PHP
-  - Bash
-  - SQL
-  - Git
-
-- Protokollat
-
-  - Bluetooth LE
-  - HTTP
-  - TCP
-
-| Protokollat  | Kuvaus                                          |
-| ------------ | ----------------------------------------------- |
-| Bluetooth LE | Käytetään nRF5340DK:n ja Raspberry Pi:n välillä |
-| HTTP         | desc                                            |
-| TCP          | desc                                            |
+| Protokollat  | Kuvaus                                                                        |
+| ------------ | ----------------------------------------------------------------------------- |
+| Bluetooth LE | Yhteys nRF5340DK:n ja Raspberry Pi:n välillä                                  |
+| HTTP         | Käytetään esim. datan hakemiseen tietokannasta tcp_datafetcher.py -ohjelmassa |
+| TCP          | Käytetään esim. web-palvelimen pyytäessä tietokannan tietoja                  |
 
 ## Komponentit
 
@@ -85,15 +79,22 @@ KUVA: GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat s
 ### Raspberry Pi 3 Model B
 
 - BLE GATT Client -ohjelma
-  - Ohjelma skannaa laitteita, yhdistää nRF5340DK-kehitysalustaan ja tilaa (subscribes) BLE ilmoituksia.
+  - Ohjelma skannaa bluetooth-laitteita, yhdistää nRF5340DK-kehitysalustaan ja tilaa (subscribes) anturidataa sisältäviä BLE ilmoituksia.
   - GAP-yhteysrooli on Central.
 
 ### Ubuntu serveri
 
 - MySQL-tietokanta
+
   - Sisältää tietokantaan lähetettyä GY-61-kiihtyvyysanturin XYZ-dataa ja suunta-arvot.
+
 - firewall.bash
+
   - Suodattaa Oamkin verkon ulkopuolelta tulevaa liikennettä.
+
+- db_fetch -ohjelma
+
+  - Pieni PHP-skripti tietokannassa sijaitsevan datan hakemiseen ja näyttämiseen Apache web-palvelimella. Lisäsimme 404-virheen väärän osoitteen asettamisesta.
 
 ### Kannettava tietokone
 
