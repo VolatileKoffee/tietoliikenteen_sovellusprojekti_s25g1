@@ -34,18 +34,18 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 | Kehitysalustat    | Kuvaus                                                   |
 | ----------------- | -------------------------------------------------------- |
-| Visual Studo Code | Ohjelmointiympäristö                                     |
+| Visual Studo Code | Ohjelmointiympäristö (IDE)                               |
 | nRF Connect       | nRF-laitteiden kehitystä tukeva työkalukehys (framework) |
-| GitHub            | Verkkosivu, joka tarjoaa Git-versionhallinnan            |
+| GitHub            | Verkkosivu, joka tarjoaa mm. Git-versionhallinnan        |
 
-| Ohjelmointikielet | Kuvaus                                        |
-| ----------------- | --------------------------------------------- |
-| Python            |                                               |
-| C                 |                                               |
-| PHP               |                                               |
-| Bash              |                                               |
-| SQL               |                                               |
-| Git               | Komentoriviohjelma, käytetään GitHubin kanssa |
+| Ohjelmointikielet | Kuvaus                                              |
+| ----------------- | --------------------------------------------------- |
+| Python            | Esim. KMeans-algoritmin ja datahallinnan ohjelmissa |
+| C                 | Kehityskieli nRF5340DK:n ohjelmissa                 |
+| PHP               | Web-palvelimen ja 404-virheen toteutus              |
+| Bash              | Skriptien esim. palomuurin toteutus                 |
+| SQL               | Käytetään tietokantahakuja ja -lisäyksiä varten     |
+| Git               | Komentoriviohjelma, käytetään GitHubin kanssa       |
 
 | Protokollat  | Kuvaus                                                                        |
 | ------------ | ----------------------------------------------------------------------------- |
