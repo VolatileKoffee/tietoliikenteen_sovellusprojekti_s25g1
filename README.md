@@ -1,8 +1,8 @@
 # Tietoliikenteen sovellusprojekti
 
-Oulun Ammattikorkeakoulun tieto- ja viestintätekniikan 2. vuosikurssin opiskelijoiden "Tietoliikenteen sovellusprojekti" syksyllä 2025.
-
 ## Kuvaus
+
+Oulun Ammattikorkeakoulun tieto- ja viestintätekniikan 2. vuosikurssin opiskelijoiden "Tietoliikenteen sovellusprojekti" syksyllä 2025.
 
 Kehitysalusta nRF5340DK mittaa GY-61-kiihtyvyysanturilla dataa ja välittää datan langattomasti IoT-reitittimelle (Raspberry Pi). Raspberry Pi välittää dataa omalle MySQL-palvelimelle.
 
@@ -20,7 +20,7 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 ### Arkkitehtuurikaavio:
 
-  <img src="docs/projektin_arkkitehtuuri_ver1.png" alt="Projektin arkkitehtuurikaavio" width="70%">
+  <img src="docs/projektin_arkkitehtuuri_ver1.png" alt="Projektin arkkitehtuurikaavio" width="85%">
 
 ### Käytetyt teknologiat
 
