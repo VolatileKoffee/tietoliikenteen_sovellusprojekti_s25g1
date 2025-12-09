@@ -1,5 +1,18 @@
 # Tietoliikenteen sovellusprojekti
 
+## Sisällysluettelo
+
+- [Kuvaus](#kuvaus)
+- [Vaiheet](#vaiheet)
+- [Arkkitehtuuri](#arkkitehtuuri)
+- [Komponenttikohtainen kuvaus](#komponenttikohtainen-kuvaus)
+  - [nRF5430DK + GY-61-kiihtyvyysanturi](#nrf5430dk--gy-61-kiihtyvyysanturi)
+  - [Raspberry Pi 3 Model B](#raspberry-pi-3-model-b)
+  - [Ubuntu serveri](#ubuntu-serveri)
+  - [PC](#pc)
+- [Projektin tekijät](#projektin-tekijät)
+- [Lisenssi](#lisenssi)
+
 ## Kuvaus
 
 Oulun Ammattikorkeakoulun tieto- ja viestintätekniikan 2. vuosikurssin opiskelijoiden "Tietoliikenteen sovellusprojekti" syksyllä 2025.
@@ -18,11 +31,83 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 ## Arkkitehtuuri
 
-### Arkkitehtuurikaavio:
+Arkkitehtuurikaaviossa esitellään projektin keskeisimmät komponentit. Komponentteja ja niiden tehtäviä esitellään tarkemmin otsikossa [Komponenttikohtainen kuvaus](#komponenttikohtainen-kuvaus).
 
-  <img src="docs/projektin_arkkitehtuuri_ver1.png" alt="Projektin arkkitehtuurikaavio" width="85%">
+<p align=center><img src="docs/projektin_arkkitehtuuri_ver1.png" alt="Projektin arkkitehtuurikaavio" width="85%"></p>
 
-### Käytetyt teknologiat
+## Komponenttikohtainen kuvaus
+
+### nRF5430DK + GY-61-kiihtyvyysanturi
+
+- adc.c -ohjelma
+
+  - Alustaa ADC-kanavat, mittaa kiihtyvyysanturin jännitearvoja ja tallentaa ne tietueeseen (struct) lähettämistä varten.
+
+- BLE GATT Server -ohjelma
+
+  - Ohjelman tarkoitus on yhdistää Raspberry Pi -alustaan, mainostaa olemassaoloaan (advertising) ja yhteyden muodostaessaan lähettää mitattua anturidataa ilmoituksien (notifications) kautta.
+  - GAP-yhteysrooli on Peripheral.
+
+  Kuvassa nRF5340DK ja GY-61-kiihtyvyysanturi. Kuvassa alusta ja sensori ovat valmiita mittaukseen:
+
+  <p align=center><img src="docs/nrf5340dk_and_sensor.jpg" alt="nRF5340DK ja GY-61-kiihtyvyysanturi" width="50%">\n</p>
+
+  Kuvassa GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat sensorisuuntia (0-5):
+
+  <p align=center><img src="docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturin kolme XYZ-akselia tuottavat kuusi eri asentoa ja niille annettiin arvot" width="50%">\n</p>
+
+### Raspberry Pi 3 Model B
+
+- BLE GATT Client -ohjelma
+
+  - Ohjelma skannaa bluetooth-laitteita, yhdistää nRF5340DK-kehitysalustaan ja tilaa (subscribes) anturidataa sisältäviä BLE ilmoituksia.
+
+  - Lisäksi Raspberry lähettää saapuneen anturidatan MySQL-tietokantaan TCP-protokollan avulla.
+
+  - GAP-yhteysrooli on Central.
+
+  <p align=center><img src="docs/raspberry_pi_3_model_b.jpg" alt="Raspberry Pi 3 kuva" width="50%"></p>
+
+### Ubuntu serveri
+
+- MySQL-tietokanta
+
+  - Sisältää tietokantaan lähetettyä GY-61-kiihtyvyysanturin XYZ-dataa ja suunta-arvot.
+
+- firewall.bash
+
+  - Suodattaa Oamkin verkon ulkopuolelta tulevaa liikennettä.
+
+- db_fetch -ohjelma
+
+  - Pieni PHP-skripti tietokannassa sijaitsevan datan hakemiseen ja näyttämiseen Apache web-palvelimella. Lisäsimme 404-virheen väärän osoitteen asettamisesta.
+
+### PC
+
+- tcp_datafetcher -ohjelma
+
+  - Hakee TCP-protokollan avulla mittausdataa MySQL-tietokannasta ja tallentaa sen measurementdata.csv tiedostoksi.
+
+- kmeans_algorithm -ohjelma
+
+  - Lukee measurementdata.csv tiedoston ja piirtää XYZ-datapisteet 3D-taulukkoon. Tämän jälkeen ohjelma asettaa keskipisteille (centroids) omat datajoukot (clusters) ja laskee jokaiselle keskipisteelle etäisyyden datajoukon pisteisiin. Keskipiste "voittaa" lyhyimmällä etäisyydellä olevan datapisteen itselleen. Etäisyyslaskun ja "voitettujen" datapisteiden perusteella keskipiste saa omat XYZ-koordinaatit.
+  - Kuuden keskipisteen XYZ-koordinaatit tallennetaan centroid_coords -taulukkoon centroid_data.h-tiedoston sisälle.
+
+  Kuvassa keskipisteet (siniset tähdet) ovat laskettu datajoukkojen keskelle.
+  <p align=center><img src="docs/kmeans_centroids_on_dataclusters.png" alt="Confusion Matrix ohjelman tulostus" width="70%"></p>
+
+  Alla olevassa kuvassa centroid_data.h tiedoston 6x3 taulukossa keskipisteet ovat järjestyksessä (ylhäältä alas): `high x`, `low x`, `high y`, `low y`, `high z` ja `low z`.
+  <p align=center><img src="docs/centroid_data_headerfile.png" alt="Confusion Matrix ohjelman tulostus" width="70%"></p>
+
+- confusion_matrix -ohjelma
+
+  - Ohjelma käyttää kmeans_algorithm -ohjelman tuottamaa centroid_data.h-tiedostoa ja nRF5340DK-kehitysalustalla mitattuja XYZ-arvoja. Tuloksena syntyy 6x6 kokoinen "confusion matriisi", jonka avulla kmeans_algorithm -ohjelman luokittelukykyä voidaan arvioida.
+
+  Kuvassa X-akselilla keskipisteen "voitetut" datapisteet ja Y-akselilla mitattu asento. Diagonaalinen tulosjono kertoo hyvästä luokittelusta.
+
+  <p align=center><img src="docs/confusion_matrix_program_output.png" alt="Confusion Matrix ohjelman tulostus" width="50%"></p>
+
+## Käytetyt teknologiat
 
 | Alustat ja laitteet    | Kuvaus                                                                |
 | ---------------------- | --------------------------------------------------------------------- |
@@ -59,70 +144,6 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 | BLE (Bluetooth LE) | Yhteys nRF5340DK:n ja Raspberry Pi:n välillä                                  |
 | HTTP               | Käytetään esim. datan hakemiseen tietokannasta tcp_datafetcher.py -ohjelmassa |
 | TCP                | Käytetään esim. web-palvelimen pyytäessä tietokannan tietoja                  |
-
-## Komponenttikohtainen kuvaus
-
-### nRF5430DK + GY-61-kiihtyvyysanturi
-
-- adc.c -ohjelma
-
-  - Alustaa ADC-kanavat, mittaa kiihtyvyysanturin jännitearvoja ja tallentaa ne tietueeseen (struct) lähettämistä varten.
-
-- BLE GATT Server -ohjelma
-
-  - Ohjelman tarkoitus on yhdistää Raspberry Pi -alustaan, mainostaa olemassaoloaan (advertising) ja yhteyden muodostaessaan lähettää mitattua anturidataa ilmoituksien (notifications) kautta.
-  - GAP-yhteysrooli on Peripheral.
-
-  Kuvassa nRF5340DK ja GY-61-kiihtyvyysanturi. Kuvassa alusta ja sensori ovat valmiita mittaukseen:
-
-  <img src="docs/nrf5340dk_and_sensor.jpg" alt="nRF5340DK ja GY-61-kiihtyvyysanturi" width="50%">\n
-
-  Kuvassa GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat sensorisuuntia:
-
-  <img src="docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturi ja XYZ-akselit" width="50%">\n
-
-### Raspberry Pi 3 Model B
-
-- BLE GATT Client -ohjelma
-
-  - Ohjelma skannaa bluetooth-laitteita, yhdistää nRF5340DK-kehitysalustaan ja tilaa (subscribes) anturidataa sisältäviä BLE ilmoituksia.
-  - GAP-yhteysrooli on Central.
-
-  <img src="docs/raspberry_pi_3_model_b.jpg" alt="Raspberry Pi 3 kuva" width="50%">
-
-### Ubuntu serveri
-
-- MySQL-tietokanta
-
-  - Sisältää tietokantaan lähetettyä GY-61-kiihtyvyysanturin XYZ-dataa ja suunta-arvot.
-
-- firewall.bash
-
-  - Suodattaa Oamkin verkon ulkopuolelta tulevaa liikennettä.
-
-- db_fetch -ohjelma
-
-  - Pieni PHP-skripti tietokannassa sijaitsevan datan hakemiseen ja näyttämiseen Apache web-palvelimella. Lisäsimme 404-virheen väärän osoitteen asettamisesta.
-
-### PC
-
-- tcp_datafetcher -ohjelma
-
-  - Hakee TCP-protokollan avulla mittausdataa MySQL-tietokannasta ja tallentaa sen measurementdata.csv tiedostoksi.
-
-- kmeans_algorithm -ohjelma
-
-  - Lukee measurementdata.csv tiedoston ja piirtää XYZ-datapisteet 3D-taulukkoon. Tämän jälkeen ohjelma asettaa keskipisteille (centroids) omat datajoukot (clusters) ja laskee jokaiselle keskipisteelle etäisyyden datajoukon pisteisiin. Keskipiste "voittaa" lyhyimmällä etäisyydellä olevan datapisteen itselleen. Etäisyyslaskun ja "voitettujen" datapisteiden perusteella keskipiste saa omat XYZ-koordinaatit.
-  - Kuuden keskipisteen XYZ-koordinaatit tallennetaan centroid_coords -taulukkoon centroid_data.h-tiedoston sisälle.
-
-  <img src="docs/kmeans_centroids_on_dataclusters.png" alt="Confusion Matrix ohjelman tulostus" width="50%">
-  <img src="docs/centroid_data_headerfile.png" alt="Confusion Matrix ohjelman tulostus" width="50%">
-
-- confusion_matrix -ohjelma
-
-  - Ohjelma käyttää kmeans_algorithm -ohjelman tuottamaa centroid_data.h-tiedostoa ja nRF5340DK-kehitysalustalla mitattuja XYZ-arvoja. Tuloksena syntyy 6x6 kokoinen "confusion matriisi", jonka avulla kmeans_algorithm -ohjelman luokittelukykyä voidaan arvioida.
-
-  <img src="docs/confusion_matrix_program_output.png" alt="Confusion Matrix ohjelman tulostus" width="50%">
 
 ## Projektin tekijät
 
