@@ -48,11 +48,11 @@ Arkkitehtuurikaaviossa esitellään projektin keskeisimmät komponentit. Kompone
   - Ohjelman tarkoitus on yhdistää Raspberry Pi -alustaan, mainostaa olemassaoloaan (advertising) ja yhteyden muodostaessaan lähettää mitattua anturidataa ilmoituksien (notifications) kautta.
   - GAP-yhteysrooli on Peripheral.
 
-  Kuvassa nRF5340DK ja GY-61-kiihtyvyysanturi. Kuvassa alusta ja sensori ovat valmiita mittaukseen:
+  nRF5340DK ja GY-61-kiihtyvyysanturi ovat valmiita mittaukseen:
 
   <p align=center><img src="docs/nrf5340dk_and_sensor.jpg" alt="nRF5340DK ja GY-61-kiihtyvyysanturi" width="50%">\n</p>
 
-  Kuvassa GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat sensorisuuntia (0-5):
+  GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat sensorisuuntia (0-5):
 
   <p align=center><img src="docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturin kolme XYZ-akselia tuottavat kuusi eri asentoa ja niille annettiin arvot" width="50%">\n</p>
 
@@ -93,39 +93,39 @@ Arkkitehtuurikaaviossa esitellään projektin keskeisimmät komponentit. Kompone
   - Lukee measurementdata.csv tiedoston ja piirtää XYZ-datapisteet 3D-taulukkoon. Tämän jälkeen ohjelma asettaa keskipisteille (centroids) omat datajoukot (clusters) ja laskee jokaiselle keskipisteelle etäisyyden datajoukon pisteisiin. Keskipiste "voittaa" lyhyimmällä etäisyydellä olevan datapisteen itselleen. Etäisyyslaskun ja "voitettujen" datapisteiden perusteella keskipiste saa omat XYZ-koordinaatit.
   - Kuuden keskipisteen XYZ-koordinaatit tallennetaan centroid_coords -taulukkoon centroid_data.h-tiedoston sisälle.
 
-  Kuvassa keskipisteet (siniset tähdet) ovat laskettu datajoukkojen keskelle.
+  Keskipisteet (siniset tähdet) ovat laskettu datajoukkojen keskelle.
   <p align=center><img src="docs/kmeans_centroids_on_dataclusters.png" alt="Confusion Matrix ohjelman tulostus" width="70%"></p>
 
-  Alla olevassa kuvassa centroid_data.h tiedoston 6x3 taulukossa keskipisteet ovat järjestyksessä (ylhäältä alas): `high x`, `low x`, `high y`, `low y`, `high z` ja `low z`.
+  centroid_data.h tiedoston 6x3 taulukossa keskipisteet ovat järjestyksessä (ylhäältä alas): `high x`, `low x`, `high y`, `low y`, `high z` ja `low z`.
   <p align=center><img src="docs/centroid_data_headerfile.png" alt="Confusion Matrix ohjelman tulostus" width="70%"></p>
 
 - confusion_matrix -ohjelma
 
   - Ohjelma käyttää kmeans_algorithm -ohjelman tuottamaa centroid_data.h-tiedostoa ja nRF5340DK-kehitysalustalla mitattuja XYZ-arvoja. Tuloksena syntyy 6x6 kokoinen "confusion matriisi", jonka avulla kmeans_algorithm -ohjelman luokittelukykyä voidaan arvioida.
 
-  Kuvassa X-akselilla keskipisteen "voitetut" datapisteet ja Y-akselilla mitattu asento. Diagonaalinen tulosjono kertoo hyvästä luokittelusta.
+  X-akselilla keskipisteen "voitetut" datapisteet ja Y-akselilla mitattu asento. Diagonaalinen tulosjono kertoo hyvästä luokittelusta.
 
   <p align=center><img src="docs/confusion_matrix_program_output.png" alt="Confusion Matrix ohjelman tulostus" width="50%"></p>
 
 ## Käytetyt teknologiat
 
-| Alustat ja laitteet    | Kuvaus                                                                |
-| ---------------------- | --------------------------------------------------------------------- |
-| Raspberry Pi 3 Model B | Minitietokone, joka käyttää Raspberry Pi OS -käyttöjärjestelmää       |
-| Nordic nRF5340DK       | Nordic Semiconductors:in kehitysalusta                                |
-| Ubuntu Server          | Virtuaaliserveri, joka käyttää Ubuntu 24.04.3 LTS -käyttöjärjestelmää |
-| GY-61-kiihtyvyysanturi | 3-akselinen kiihtyvyysanturi (ADXL335)                                |
-| PC                     | Kannettava tietokone (Windows 11 ja Fedora Linux)                     |
-
-| Kehitysalustat ja ohjelmistot | Kuvaus                                                    |
-| ----------------------------- | --------------------------------------------------------- |
-| Visual Studio Code            | Ohjelmointiympäristö (IDE)                                |
-| nRF Connect                   | nRF-laitteiden kehitystä tukeva työkalukehys (framework)  |
-| GitHub                        | Verkkosivu, joka tarjoaa mm. Git-versionhallinnan         |
-| MySQL                         | Tietokanta-alusta virtuaaliserverillä                     |
-| Apache                        | Käytetään PHP-sivun kanssa                                |
-| Zephyr                        | nRF5340DK:n natiivi RTOS-käyttöjärjestelmä                |
-| Nordic SDK                    | Kehityspaketti BLE-sovelluksen toteutukseen nRF5340DK:lla |
+| Alustat ja laitteet           | Kuvaus                                                                |
+| ----------------------------- | --------------------------------------------------------------------- |
+| Raspberry Pi 3 Model B        | Minitietokone, joka käyttää Raspberry Pi OS -käyttöjärjestelmää       |
+| Nordic nRF5340DK              | Nordic Semiconductors:in kehitysalusta                                |
+| Ubuntu Server                 | Virtuaaliserveri, joka käyttää Ubuntu 24.04.3 LTS -käyttöjärjestelmää |
+| GY-61-kiihtyvyysanturi        | 3-akselinen kiihtyvyysanturi (ADXL335)                                |
+| PC                            | Kannettava tietokone (Windows 11 ja Fedora Linux)                     |
+|                               |                                                                       |
+| Kehitysalustat ja ohjelmistot |                                                                       |
+|                               |                                                                       |
+| Visual Studio Code            | Ohjelmointiympäristö (IDE)                                            |
+| nRF Connect                   | nRF-laitteiden kehitystä tukeva työkalukehys (framework)              |
+| GitHub                        | Verkkosivu, joka tarjoaa mm. Git-versionhallinnan                     |
+| MySQL                         | Tietokanta-alusta virtuaaliserverillä                                 |
+| Apache                        | Käytetään PHP-sivun kanssa                                            |
+| Zephyr                        | nRF5340DK:n natiivi RTOS-käyttöjärjestelmä                            |
+| Nordic SDK                    | Kehityspaketti BLE-sovelluksen toteutukseen nRF5340DK:lla             |
 
 | Ohjelmointikielet | Kuvaus                                              |
 | ----------------- | --------------------------------------------------- |
