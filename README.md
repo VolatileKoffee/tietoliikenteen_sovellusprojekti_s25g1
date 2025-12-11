@@ -50,11 +50,11 @@ Arkkitehtuurikaaviossa esitellään projektin keskeisimmät komponentit. Kompone
 
   nRF5340DK ja GY-61-kiihtyvyysanturi ovat valmiita mittaukseen:
 
-  <p align=center><img src="docs/nrf5340dk_and_sensor.jpg" alt="nRF5340DK ja GY-61-kiihtyvyysanturi" width="50%">\n</p>
+  <p align=center><img src="docs/nrf5340dk_and_sensor.jpg" alt="nRF5340DK ja GY-61-kiihtyvyysanturi" width="50%"></p>
 
   GY-61-kiihtyvyysanturi ja XYZ-akselit. Arvot akselinimien vieressä ovat sensorisuuntia (0-5):
 
-  <p align=center><img src="docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturin kolme XYZ-akselia tuottavat kuusi eri asentoa ja niille annettiin arvot" width="50%">\n</p>
+  <p align=center><img src="docs/3axis_with_orientations_ver1.png" alt="GY-61-kiihtyvyysanturin kolme XYZ-akselia tuottavat kuusi eri asentoa ja niille annettiin arvot" width="50%"></p>
 
 ### Raspberry Pi 3 Model B
 
@@ -105,45 +105,38 @@ Arkkitehtuurikaaviossa esitellään projektin keskeisimmät komponentit. Kompone
 
   X-akselilla keskipisteen "voitetut" datapisteet ja Y-akselilla mitattu asento. Diagonaalinen tulosjono kertoo hyvästä luokittelusta.
 
-  <p align=center><img src="docs/confusion_matrix_program_output.png" alt="Confusion Matrix ohjelman tulostus" width="50%"></p>
+  <p align=center><img src="docs/confusion_matrix_program_output.png" alt="Confusion Matrix ohjelman tulostus" width="70%"></p>
 
 ## Käytetyt teknologiat
 
-| Alustat ja laitteet           | Kuvaus                                                                |
-| ----------------------------- | --------------------------------------------------------------------- |
-| Raspberry Pi 3 Model B        | Minitietokone, joka käyttää Raspberry Pi OS -käyttöjärjestelmää       |
-| Nordic nRF5340DK              | Nordic Semiconductors:in kehitysalusta                                |
-| Ubuntu Server                 | Virtuaaliserveri, joka käyttää Ubuntu 24.04.3 LTS -käyttöjärjestelmää |
-| GY-61-kiihtyvyysanturi        | 3-akselinen kiihtyvyysanturi (ADXL335)                                |
-| PC                            | Kannettava tietokone (Windows 11 ja Fedora Linux)                     |
-|                               |                                                                       |
-| Kehitysalustat ja ohjelmistot |                                                                       |
-|                               |                                                                       |
-| Visual Studio Code            | Ohjelmointiympäristö (IDE)                                            |
-| nRF Connect                   | nRF-laitteiden kehitystä tukeva työkalukehys (framework)              |
-| GitHub                        | Verkkosivu, joka tarjoaa mm. Git-versionhallinnan                     |
-| MySQL                         | Tietokanta-alusta virtuaaliserverillä                                 |
-| Apache                        | Käytetään PHP-sivun kanssa                                            |
-| Zephyr                        | nRF5340DK:n natiivi RTOS-käyttöjärjestelmä                            |
-| Nordic SDK                    | Kehityspaketti BLE-sovelluksen toteutukseen nRF5340DK:lla             |
-
-| Ohjelmointikielet | Kuvaus                                              |
-| ----------------- | --------------------------------------------------- |
-| Python            | Esim. KMeans-algoritmin ja datahallinnan ohjelmissa |
-| C                 | Kehityskieli nRF5340DK:n ohjelmissa                 |
-| PHP               | Web-palvelimen ja 404-virheen toteutus              |
-| Bash              | Skriptien esim. palomuurin toteutus                 |
-| SQL               | Käytetään tietokantahakuja ja -lisäyksiä varten     |
-
-| Versionhallinta | Kuvaus                                        |
-| --------------- | --------------------------------------------- |
-| Git             | Komentoriviohjelma, käytetään GitHubin kanssa |
-
-| Protokollat        | Kuvaus                                                                        |
-| ------------------ | ----------------------------------------------------------------------------- |
-| BLE (Bluetooth LE) | Yhteys nRF5340DK:n ja Raspberry Pi:n välillä                                  |
-| HTTP               | Käytetään esim. datan hakemiseen tietokannasta tcp_datafetcher.py -ohjelmassa |
-| TCP                | Käytetään esim. web-palvelimen pyytäessä tietokannan tietoja                  |
+| Kategoria                         | Kuvaus                                                                        |
+| --------------------------------- | ----------------------------------------------------------------------------- |
+| **Alustat ja laitteet**           |                                                                               |
+| Raspberry Pi 3 Model B            | Minitietokone, joka käyttää Raspberry Pi OS -käyttöjärjestelmää               |
+| Nordic nRF5340DK                  | Nordic Semiconductors:in kehitysalusta                                        |
+| Ubuntu Server                     | Virtuaaliserveri, joka käyttää Ubuntu 24.04.3 LTS -käyttöjärjestelmää         |
+| GY-61-kiihtyvyysanturi            | 3-akselinen kiihtyvyysanturi (ADXL335)                                        |
+| PC                                | Kannettava tietokone (Windows 11 ja Fedora Linux)                             |
+| **Kehitysalustat ja ohjelmistot** |                                                                               |
+| Visual Studio Code                | Ohjelmointiympäristö (IDE)                                                    |
+| nRF Connect                       | nRF-laitteiden kehitystä tukeva työkalukehys (framework)                      |
+| GitHub                            | Verkkosivu, joka tarjoaa mm. Git-versionhallinnan                             |
+| MySQL                             | Tietokanta-alusta virtuaaliserverillä                                         |
+| Apache                            | Käytetään PHP-sivun kanssa                                                    |
+| Zephyr                            | nRF5340DK:n natiivi RTOS-käyttöjärjestelmä                                    |
+| Nordic SDK                        | Kehityspaketti BLE-sovelluksen toteutukseen nRF5340DK:lla                     |
+| **Ohjelmointikielet**             |                                                                               |
+| Python                            | Esim. KMeans-algoritmin ja datahallinnan ohjelmissa                           |
+| C                                 | Kehityskieli nRF5340DK:n ohjelmissa                                           |
+| PHP                               | Web-palvelimen ja 404-virheen toteutus                                        |
+| Bash                              | Skriptien esim. palomuurin toteutus                                           |
+| SQL                               | Käytetään tietokantahakuja ja -lisäyksiä varten                               |
+| **Versionhallinta**               |                                                                               |
+| Git                               | Komentoriviohjelma, käytetään GitHubin kanssa                                 |
+| **Protokollat**                   |                                                                               |
+| BLE (Bluetooth LE)                | Yhteys nRF5340DK:n ja Raspberry Pi:n välillä                                  |
+| HTTP                              | Käytetään esim. datan hakemiseen tietokannasta tcp_datafetcher.py -ohjelmassa |
+| TCP                               | Käytetään esim. web-palvelimen pyytäessä tietokannan tietoja                  |
 
 ## Projektin tekijät
 
