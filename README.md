@@ -10,6 +10,7 @@
   - [Raspberry Pi 3 Model B](#raspberry-pi-3-model-b)
   - [Ubuntu serveri](#ubuntu-serveri)
   - [PC](#pc)
+- [Käytetyt teknologiat](#käytetyt-teknologiat)
 - [Projektin tekijät](#projektin-tekijät)
 - [Lisenssi](#lisenssi)
 
